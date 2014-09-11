@@ -48,6 +48,34 @@ def genRandomUser(**kwargs):
     randomUser.stream_sub(kwargs['theirstream'])
   return randomUser
 
+#< def genRandomWord>
+def genRandomWordList(listSize,wordLen):
+  retList = []
+
+  topicList = [
+      "armadillos",
+      "bats",
+      "bandicoot",
+      "cincilla",
+      "ducks",
+      "horses",
+      "pangolins",
+      "zephyr",
+      "zebra",
+      ]
+  retList.append(random.choice(topicList))
+  listSize -= 1 # added one element
+
+  # adopted from: http://stackoverflow.com/a/2257449
+  import string
+  # lambda to return 'x' digits
+  wordGen = lambda x : ''.join([random.choice(string.ascii_uppercase + string.digits) for _ in range(x)])
+
+  for num in range(listSize):
+    retList.append(wordGen(wordLen))
+  return retList
+#</def genRandomWord>
+
 #< def createTestUsers>
 #TODO: potentially change to create several users
 #TODO: test feasibility of merge with 'genRandomUser'
@@ -60,7 +88,13 @@ def createTestUsers(amount):
   # theirstream is a string
   testUser = genRandomUser(**{
     'mystream':['horses','armadillos'],
-    'theirstream':'ducks'
+    'theirstream':'ducks',
+    })
+
+  # regenerate with random data
+  testUser = genRandomUser(**{
+    'mystream':genRandomWordList(1,8),      # one word
+    'theirstream':genRandomWordList(3,8),   # three words
     })
   # print out simple data
   if(verbose == 1):
