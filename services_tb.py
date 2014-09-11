@@ -90,33 +90,47 @@ def main():
   tmpUser = createTestUsers(1)
 
   # each testParamsDict defines input and output params for one function
-  testParamsDict = {
-      'function' : manage,
-      'jsonIn'   : json.dumps({'userid':tmpUser.id}),
-      'jsonOut'  : '', # TODO
-      }
+  testDataList = []
+  testDataList.append( {
+    'function' : manage,
+    'jsonIn'   : json.dumps({'userid':tmpUser.id}),
+    #'jsonOut'  : '', # TODO
+    'jsonOut'  : json.dumps({
+      'streams_subscribed':tmpUser.get_streams_subscribed(),
+      'streams_proprietary':tmpUser.get_streams_mine(),
+      }),
+    }
+  )
 
   #TODO: put the unit test stuff here
-  print("testing service: 'manage'")
+  for testParamsDict in testDataList:
+    funcName = testParamsDict['function']
+    print("testing " + str(funcName))
 
-  #VIM: help non-greedy ; see http://stackoverflow.com/a/1305957
-  #VIM: add the quotes for hash key - nongreedy chars within [] :   s#\[\zs.\{-}\ze\]#'&'#g
-  manageJson = testParamsDict['function'](testParamsDict['jsonIn']) # test the defined function against the defined json string
-  # make sure json is correct
-  if getJson(manageJson):
-    print("json string is valid")
-  # to store back into dict:
-  # json.loads(manageJson)
-  else:
-    # errorList.append('json string has issues:")
-    print("-E-: json string has issues:")
-  print("raw json:")
-  print(manageJson)
-  ## print the dict if it exists
-  #print("pretty json:")
-  #print(manageJson)
-  #TODO: check that the json for 'manage' has two lists of streams (idea: use the dict conversion for now)
-  #TODO: find way to check types within json string
+    #testJsonIn = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
+    testJsonExpected = testParamsDict['jsonOut'] # test the defined function against the defined json string
+
+    # run function, capture output
+    testJsonReturned = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
+    # make sure json is correct
+    if getJson(testJsonReturned):
+      print("json string is valid")
+    # to store back into dict:
+    # json.loads(testJsonReturned)
+    else:
+      # errorList.append('json string has issues:")
+      print("-E-: json string has issues:")
+    print("raw json:")
+    print(testJsonReturned)
+    # TODO: this won't work because 'manage' can't access our created user and therefore creates it's own
+    if(testJsonReturned == testJsonExpected):
+      print("output json matches test expectation")
+    ## print the dict if it exists
+    #print("pretty json:")
+    #print(testJsonReturned)
+    #TODO: check that the json for 'manage' has two lists of streams (idea: use the dict conversion for now)
+    #TODO: find way to check types within json string
+  #</testloop>
 
 
   return
@@ -132,6 +146,7 @@ if __name__ == '__main__':
 
 
 '''
+VIM TIPS
 http://stackoverflow.com/a/1381652
 How do I close a single buffer (out of many) in Vim?
 
@@ -142,5 +157,12 @@ Like |:bdelete|, but really delete the buffer.
 :bd
 
 Unload buffer [N] (default: current buffer) and delete it from the buffer list. If the buffer was changed, this fails, unless when [!] is specified, in which case changes are lost. The file remains unaffected.
+==================
 
+  #VIM: help non-greedy ; see http://stackoverflow.com/a/1305957
+  #VIM: add the quotes for hash key - nongreedy chars within [] :   s#\[\zs.\{-}\ze\]#'&'#g
+  # this 
+  manageJson = testParamsDict[function](testParamsDict[jsonIn]) # test the defined function against the defined json string
+  # becomes
+  manageJson = testParamsDict['function'](testParamsDict['jsonIn']) # test the defined function against the defined json string
 '''
