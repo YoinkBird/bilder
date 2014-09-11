@@ -218,4 +218,21 @@ Unload buffer [N] (default: current buffer) and delete it from the buffer list. 
   manageJson = testParamsDict[function](testParamsDict[jsonIn]) # test the defined function against the defined json string
   # becomes
   manageJson = testParamsDict['function'](testParamsDict['jsonIn']) # test the defined function against the defined json string
+
+==================
+turn 'def function' into 
+s#\zs.*\ze#\#< &>\r&():\r  return\r\#</&>#g
+#< def function>
+def function():
+  return
+#</def function>
+
+==================
+run on save
+http://www.commandlinefu.com/commands/view/6515/using-vim-to-save-and-run-your-python-script.
+http://stackoverflow.com/a/4628210
+:autocmd BufWritePost * !run_tests.sh <afile>
+
+# remove the setting with 'autocmd!'
+:autocmd! BufWritePost * !run_tests.sh <afile>
 '''
