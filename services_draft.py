@@ -73,9 +73,23 @@ def putObjectInStorage(objectid,objectRef):
 #< def putObjectInStorage>
 
 #< def getObjectFromStorage>
+def getObjectFromStorage(objectid):
+  jsonDBfile = 'data.json'
+  dbDict = readJsonDBFile(jsonDBfile)
+
+  if(objectid in dbDict):
+    retObject = dbDict[objectid]
+  else:
+    print("-E-: object not in json db file" + str(objectid))
+    retObject = 0
+
+  return retObject
+#</def getObjectFromStorage>
+
+#< def getUserObjectFromStorage>
 #TODO: make generic for retrieving stream as well
 #TODONE: dump/retrieve json storage file with userids 
-def getObjectFromStorage(userId):
+def getUserObjectFromStorage(userId):
   # in lieue of db connection
 
   # two methods, both are fake about the id
@@ -92,19 +106,30 @@ def getObjectFromStorage(userId):
       'theirstream':'phantoms',
     })
 
-  import os.path
-  jsonUserDB = 'data.json'
-  if(os.path.isfile(jsonUserDB)):
-    del testUser # make sure no remnants of previous methods
-    userDataJson = open(jsonUserDB).read()
-    userDataDict = json.loads(userDataJson)
-    if(type(userDataDict) is dict):
-      testUser = User(userId)
-      testUser.stream_add(userDataDict[userId]['streams_mine'])
-      testUser.stream_sub(userDataDict[userId]['streams_subscribed'])
+  #< old way >
+  if(0):
+    import os.path
+    jsonUserDB = 'data.json'
+    if(os.path.isfile(jsonUserDB)):
+      del testUser # make sure no remnants of previous methods
+      userDataJson = open(jsonUserDB).read()
+      userDataDict = json.loads(userDataJson)
+      if(type(userDataDict) is dict):
+        testUser = User(userId)
+        testUser.stream_add(userDataDict[userId]['streams_mine'])
+        testUser.stream_sub(userDataDict[userId]['streams_subscribed'])
+    del userDataDict
+  #</old way >
+
+  del testUser
+  userDataDict = getObjectFromStorage(userId)
+  if(userDataDict):
+    testUser = User(userId)
+    testUser.stream_add(userDataDict['streams_mine'])
+    testUser.stream_sub(userDataDict['streams_subscribed'])
 
   return testUser
-#</def getObjectFromStorage>
+#</def getUserObjectFromStorage>
 
 
 #< def manage()>
@@ -126,7 +151,7 @@ def manage(jsonString):
     print("-E-: no valid json string passed to 'def manage' - after json.loads, type is not any of int,str,dict")
     print(jsonString)
   
-  userObject = getObjectFromStorage(userid)
+  userObject = getUserObjectFromStorage(userid)
   # test objects
   if(0):
     selfStreamList = userObject.get_streams_mine() # default is self
