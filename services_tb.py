@@ -52,7 +52,18 @@ def genRandomUser(**kwargs):
 def genRandomWordList(listSize,wordLen):
   retList = []
 
-  topicList = [
+  import os.path
+  # from http://a-z-animals.com/animals/endangered/
+  filename = 'tests/animals.txt'
+  if(os.path.isfile(filename)):
+    #animalFile = open('animals.txt').read()
+    # http://stackoverflow.com/questions/3277503/python-read-file-line-by-line-into-array#comment28643126_3277515
+    topicList = [line.rstrip('\n') for line in open(filename)] 
+    print("")
+
+  # make first item of list human-readable
+  # my choices
+  topicList.extend([
       "armadillos",
       "bats",
       "bandicoot",
@@ -62,7 +73,7 @@ def genRandomWordList(listSize,wordLen):
       "pangolins",
       "zephyr",
       "zebra",
-      ]
+      ])
   retList.append(random.choice(topicList))
   listSize -= 1 # added one element
 
