@@ -36,12 +36,28 @@ class User:
     self.streams_mine = []
     self.streams_subscribed = []
 
+
+  def listConcat(self,listName,streamId):
+    if(0):
+      print("listConcat called on id(self.streams_mine) == " + str(id(self.streams_mine)))
+    if(type(streamId) is list):
+      listName.extend(streamId) # note to self: this definitely updates by reference
+    elif(type(streamId) is str):
+      listName.append(streamId)
+    else:
+      print("cannot append:")
+      print(streamId)
+    return
+
   # add streams
   def stream_add(self,streamId):
-    self.streams_mine.append(streamId)
+    if(0):
+      print("stream_add called on id(self.streams_mine) == " + str(id(self.streams_mine)))
+      print("calling self.listConcat:")
+    self.listConcat(self.streams_mine,streamId)
     
   def stream_sub(self,streamId):
-    self.streams_subscribed.append(streamId)
+    self.listConcat(self.streams_subscribed,streamId)
 
   # access streams
   #TODO: return self by default
