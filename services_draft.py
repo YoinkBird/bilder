@@ -1,8 +1,9 @@
+import json
 #TODO: split 'services_draft.py' into 'services.py' and 'classes.py' once things work a bit
 '''
 questionsList = [
   "what is a page range?",
-  "",
+  "for page list, does the order matter",
   ]
 
 todoList = [
@@ -35,8 +36,17 @@ class User:
     self.streams_mine = []
     self.streams_subscribed = []
 
+  # add streams
+  def stream_add(self,streamId):
+    self.streams_mine.append(streamId)
+    
+  def stream_sub(self,streamId):
+    self.streams_subscribed.append(streamId)
+
+  # access streams
   #TODO: return self by default
-  #def get_stream(self,*args,**kwargs):
+  # future: 'get_streams_mine' calls 'get_stream'
+  # future: 'get_streams_subscribed' calls 'get_stream'
   def get_stream(self,*args,**kwargs):
     streamType = ''
     if(kwargs):
@@ -52,6 +62,14 @@ class User:
   def get_streams_subscribed(self):
     #return get_stream(type=subscribed)
     return self.streams_subscribed
+
+  # remove streams
+  def stream_rm(self,streamId):
+    #TODO: implement as a set if possible to avoid duplicate streams
+    self.streams_mine.remove(streamId)
+  def stream_unsub(self,streamId):
+    #TODO: implement as a set if possible to avoid duplicate streams
+    self.streams_subscribed.remove(streamId)
 
 
 
@@ -77,11 +95,17 @@ def manage(userid):
   #   userid.getUserStreams(self) # default is self
   #   userid.getSubscribedStreams(subscribed)
   # get user streams
-  selfStreamList = userid.getStreams(self) # default is self
-  otherStreamList = userid.getStreams(subscribed)
+  #selfStreamList = userid.get_streams_mine() # default is self
+  #otherStreamList = userid.get_streams_subscribed()
+  #return(json.dumps(selfStreamList, otherStreamList))
+
+  contentDict = {}
+  contentDict['streams_proprietary'] = userid.get_streams_mine() # default is self
+  contentDict['streams_subscribed'] = userid.get_streams_subscribed()
+  
   
   # get subscribed streams
-  return(selfStreamList, subscribeStreamList)
+  return(json.dumps(contentDict))
 
 
 
