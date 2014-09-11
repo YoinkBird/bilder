@@ -155,34 +155,39 @@ def main():
   #TODO: put the unit test stuff here
   for testParamsDict in testDataList:
     funcName = testParamsDict['function']
-    print("testing " + str(funcName))
+    print("")
+    print("-I-: testing " + str(funcName))
 
     #testJsonIn = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
     testJsonExpected = testParamsDict['jsonOut'] # test the defined function against the defined json string
 
     # run function, capture output
     testJsonReturned = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
-    # make sure json is correct
-    if getJson(testJsonReturned):
-      print("json string is valid")
-    # to store back into dict:
-    # json.loads(testJsonReturned)
-    else:
-      # errorList.append('json string has issues:")
-      print("-E-: json string has issues:")
-    print("raw json:      " + testJsonReturned)
-    # TODO: this won't work because 'manage' can't access our created user and therefore creates it's own
-    if(testJsonReturned == testJsonExpected):
-      print("-I-: output json matches test expectation!")
-    else:
-      #TODO: format such that the 'raw json' is directly above the 'expected json'
-      print("expected json: " + testJsonExpected)
-      print("-E-: output json does not match test expectation")
-    ## print the dict if it exists
-    #print("pretty json:")
-    #print(testJsonReturned)
-    #TODO: check that the json for 'manage' has two lists of streams (idea: use the dict conversion for now)
-    #TODO: find way to check types within json string
+    # make sure function returns something
+    if(testJsonReturned):
+      # make sure json is correct
+      if getJson(testJsonReturned):
+        print("json string is valid")
+      # to store back into dict:
+      # json.loads(testJsonReturned)
+      else:
+        # errorList.append('json string has issues:")
+        print("-E-: json string has issues:")
+      print("raw json:      " + testJsonReturned)
+      # TODO: this won't work because 'manage' can't access our created user and therefore creates it's own
+      if(testJsonReturned == testJsonExpected):
+        print("-I-: output json matches test expectation!")
+      else:
+        #TODO: format such that the 'raw json' is directly above the 'expected json'
+        print("expected json: " + testJsonExpected)
+        print("-E-: output json does not match test expectation")
+      ## print the dict if it exists
+      #print("pretty json:")
+      #print(testJsonReturned)
+      #TODO: check that the json for 'manage' has two lists of streams (idea: use the dict conversion for now)
+      #TODO: find way to check types within json string
+    elif(not testJsonReturned):
+      print("-E-: doa - function is returning nothing")
   #</testloop>
 
 
