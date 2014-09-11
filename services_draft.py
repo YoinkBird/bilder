@@ -122,10 +122,24 @@ def getObjectFromStorage(userId):
     })
   return testUser
 #</def getObjectFromStorage>
-def manage(userid):
 
 
-#TODO:  let 'manage' look up user object based on id - right now it accepts a user object which is bad because that can't be in a json...
+def manage(jsonString):
+
+  #if(type(jsonString) not str):
+    #print("-E-: 'def manage' expects a json-formatted string!")
+  # extract from json
+  jsonObj = json.loads(jsonString)
+  userid = ''
+  #TODO: put this in the 'getJson' function
+  if(type(jsonObj) is dict):
+    if('userid' in jsonObj):
+      userid = jsonObj['userid']
+  elif(type(jsonObj) is int or type(jsonObj) is str or type(jsonObj) is unicode):
+    userid = jsonObj
+  else:
+    print("-E-: no valid json string passed to 'def manage' - after json.loads, type is not any of int,str,dict")
+    print(jsonString)
   
   userObject = getObjectFromStorage(userid)
   # test objects
