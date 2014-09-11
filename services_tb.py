@@ -44,9 +44,33 @@ def genRandomUser(**kwargs):
     randomUser.stream_add(kwargs['mystream'])
   if('theirstream' in kwargs):
     randomUser.stream_sub(kwargs['theirstream'])
-
-
   return randomUser
+
+#< def createTestUsers>
+#TODO: potentially change to create several users
+#TODO: test feasibility of merge with 'genRandomUser'
+def createTestUsers(amount):
+  verbose = 0
+  # initialise a user with parameters as a simple doa test
+  if(verbose == 1):
+    print("creating a test user")
+  # mystream is a list of stream names
+  # theirstream is a string
+  testUser = genRandomUser(**{
+    'mystream':['horses','armadillos'],
+    'theirstream':'ducks'
+    })
+  # print out simple data
+  if(verbose == 1):
+    pprint(testUser)
+    print("id:" + str(testUser.id))
+    print("mystream:" + ' '.join(testUser.get_streams_mine()))
+    print("theirstream:" + ' '.join(testUser.get_streams_subscribed()))
+
+
+  #TODO: potentially return list of users 
+  return testUser
+#</def createTestUsers>
 
 def getJson(jsonStr):
   try:
@@ -57,19 +81,10 @@ def getJson(jsonStr):
     return False
   return jsonDict
 
+#TODO: generate a bunch of users, then let 'manage' look up user object based on id
 def main():
   # initialise a user as a simple doa test
-  #tmpUser = genRandomUser()
-  # initialise a user with parameters as a simple doa test
-  tmpUser = genRandomUser(**{
-    'mystream':['horses','armadillos'],
-    'theirstream':'ducks'
-    })
-  # print out simple data
-  pprint(tmpUser)
-  print("id:" + str(tmpUser.id))
-  print("mystream:" + ' '.join(tmpUser.get_streams_mine()))
-  print("theirstream:" + ' '.join(tmpUser.get_streams_subscribed()))
+  tmpUser = createTestUsers(1)
 
   #TODO: put the unit test stuff here
   manageJson = manage(tmpUser)
