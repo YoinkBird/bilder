@@ -81,19 +81,27 @@ def getJson(jsonStr):
     return False
   return jsonDict
 
-#TODO: generate a bunch of users, then let 'manage' look up user object based on id
+# TODO: generate a bunch of users and store in fake db (json file) so that id-based retrieval more realistic
+# TODO: test: functions should reject non-strings, 
+#       i.e. this should fail because of int:    manageJson = manage(tmpUser.id)
 def main():
   # initialise a user as a simple doa test
   # to put on airs of doing things correctly, this user's id will be passed to the 'manage' function
   tmpUser = createTestUsers(1)
 
+  # each testParamsDict defines input and output params for one function
+  testParamsDict = {
+      'function' : manage,
+      'jsonIn'   : json.dumps({'userid':tmpUser.id}),
+      'jsonOut'  : '', # TODO
+      }
+
   #TODO: put the unit test stuff here
   print("testing service: 'manage'")
-  if(0): # TODO: test: functions should reject non-strings
-    manageJson = manage(tmpUser.id)
-  #TODO: choose format
-  manageJson = manage(json.dumps(tmpUser.id))
-  manageJson = manage(json.dumps({'userid':tmpUser.id}))
+
+  #VIM: help non-greedy ; see http://stackoverflow.com/a/1305957
+  #VIM: add the quotes for hash key - nongreedy chars within [] :   s#\[\zs.\{-}\ze\]#'&'#g
+  manageJson = testParamsDict['function'](testParamsDict['jsonIn']) # test the defined function against the defined json string
   # make sure json is correct
   if getJson(manageJson):
     print("json string is valid")
