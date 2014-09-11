@@ -1,11 +1,23 @@
 import json
 #TODO: split 'services_draft.py' into 'services.py' and 'classes.py' once things work a bit
-'''
-questionsList = [
-  "what is a page range?",
-  "for page list, does the order matter",
-  ]
 
+def _questions():
+  questionsList = [
+    "What is a page range?# \n (which takes a stream id and a page range and returns a list of URLs to images and a page range)",
+    "For page list, does the order matter, i.e. can it be a hash/set internally",
+    "When two things are returned should both be in one json object or one object per string, e.g. two lists of streams",
+    "Is json to be passed between python functions as well? Is it efficient for each function to read DB for an ID",
+    ]
+  questionStr = ''
+  questionStr += "\n# < questions>"
+  questionsList[0] = '\n# * ' + questionsList[0]
+  questionStr += '?\n# * '.join(questionsList)
+  questionStr += "\n# </questions>\n"
+  print(questionStr)
+  return
+_questions()
+
+'''
 todoList = [
   "ensure all user ids are unique",
   ]
