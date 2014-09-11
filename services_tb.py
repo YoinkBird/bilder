@@ -89,6 +89,10 @@ def main():
   # to put on airs of doing things correctly, this user's id will be passed to the 'manage' function
   tmpUser = createTestUsers(1)
 
+  # dump user to file
+  with open('data.json', 'w') as outfile:
+    json.dump({tmpUser.id:tmpUser.get_hash_repr()}, outfile, sort_keys=True,indent=4)
+
   # each testParamsDict defines input and output params for one function
   testDataList = []
   testDataList.append( {
@@ -120,11 +124,14 @@ def main():
     else:
       # errorList.append('json string has issues:")
       print("-E-: json string has issues:")
-    print("raw json:")
-    print(testJsonReturned)
+    print("raw json:      " + testJsonReturned)
     # TODO: this won't work because 'manage' can't access our created user and therefore creates it's own
     if(testJsonReturned == testJsonExpected):
-      print("output json matches test expectation")
+      print("-I-: output json matches test expectation!")
+    else:
+      #TODO: format such that the 'raw json' is directly above the 'expected json'
+      print("expected json: " + testJsonExpected)
+      print("-E-: output json does not match test expectation")
     ## print the dict if it exists
     #print("pretty json:")
     #print(testJsonReturned)

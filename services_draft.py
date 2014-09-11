@@ -40,6 +40,8 @@ Class stream
 
 '''
 
+#TODO: natively dump json string - just convert 'get_hash_repr'
+#TODO: natively import json string
 class User:
   def __init__(self,id):
     self.id = id
@@ -99,6 +101,13 @@ class User:
     #TODO: implement as a set if possible to avoid duplicate streams
     self.streams_subscribed.remove(streamId)
 
+  def get_hash_repr(self):
+    hashRepr = {
+        'userid':self.id,
+        'streams_mine':self.streams_mine,
+        'streams_subscribed':self.streams_subscribed,
+        }
+    return hashRepr
 
 
 ############# services ########################
@@ -116,7 +125,7 @@ Write specific services for
 
 #< def getObjectFromStorage>
 #TODO: make generic for retrieving stream as well
-#TODO: dump/retrieve json storage file with userids 
+#TODONE: dump/retrieve json storage file with userids 
 def getObjectFromStorage(userId):
   # in lieue of db connection
 
@@ -127,11 +136,24 @@ def getObjectFromStorage(userId):
   tmpUser.id = userId
 
   from services_tb import genRandomUser
+  # deliberately create user with same id but different data to verify that user data is being looked up correctly
   testUser = genRandomUser(**{
       'seed':userId, 
       'mystream':['sheets','pillows'],
       'theirstream':'phantoms',
     })
+
+  import os.path
+  jsonUserDB = 'data.json'
+  if(os.path.isfile(jsonUserDB)):
+    del testUser # make sure no remnants of previous methods
+    userDataJson = open(jsonUserDB).read()
+    userDataDict = json.loads(userDataJson)
+    if(type(userDataDict) is dict):
+      testUser = User(userId)
+      testUser.stream_add(userDataDict[userId]['streams_mine'])
+      testUser.stream_sub(userDataDict[userId]['streams_subscribed'])
+
   return testUser
 #</def getObjectFromStorage>
 
