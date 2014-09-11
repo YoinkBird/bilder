@@ -136,6 +136,8 @@ def getObjectFromStorage(userId):
 #</def getObjectFromStorage>
 
 
+#< def manage()>
+# (which takes a user id and return two lists of streams)
 def manage(jsonString):
 
   #if(type(jsonString) not str):
@@ -170,6 +172,53 @@ def manage(jsonString):
   
   # get subscribed streams
   return(json.dumps(contentDict))
+#</def manage>
+
+# function stubs
+# TODO: populate below stubs
+# NOTE: figure out which functions can inherit from each other
+
+#< def create_stream()>
+# (which takes a stream definition and returns a status code)
+def create_stream():
+  return
+#</def create_stream>
+
+#< def view_stream()>
+# (which takes a stream id and a page range and returns a list of URLs to images and a page range)
+def view_stream():
+  return
+#</def view_stream>
+
+#< def image_upload()>
+# (which takes a stream id and a file)
+def image_upload():
+  return
+#</def image_upload>
+
+#< def view_streams_all()>
+# (which returns a list of names of streams and their cover images)
+def view_streams_all():
+  return
+#</def view_streams_all>
+
+#< def search_streams>
+# (which takes a query string and returns a list of streams (titles and cover image urls) that contain matching text)
+def search_streams():
+  return
+#</def search_streams>
+
+#< def most_viewed_streams()>
+# (which returns a list of streams sorted by recent access frequency)
+def most_viewed_streams():
+  return
+#</def most_viewed_streams>
+
+#< def reporting()>
+def reporting():
+  return
+#</def reporting()>
+
 
 
 
