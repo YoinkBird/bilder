@@ -106,14 +106,14 @@ Write specific services for
 
 def manage(userid):
 
-  # THOUGHTS: how to set up user to contain streams
-  # ramble:
-  #   userid.getUserStreams(self) # default is self
-  #   userid.getSubscribedStreams(subscribed)
-  # get user streams
-  #selfStreamList = userid.get_streams_mine() # default is self
-  #otherStreamList = userid.get_streams_subscribed()
-  #return(json.dumps(selfStreamList, otherStreamList))
+  # test objects
+  if(0):
+    selfStreamList = userid.get_streams_mine() # default is self
+    otherStreamList = userid.get_streams_subscribed()
+    # non-json return:
+    return(selfStreamList, otherStreamList)
+    # returns two strings - should the caller expect various returns?
+    return(json.dumps(selfStreamList, otherStreamList))
 
   contentDict = {}
   contentDict['streams_proprietary'] = userid.get_streams_mine() # default is self

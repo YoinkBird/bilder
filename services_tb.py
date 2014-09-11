@@ -48,6 +48,14 @@ def genRandomUser(**kwargs):
 
   return randomUser
 
+def getJson(jsonStr):
+  try:
+    jsonDict = json.loads(jsonStr)
+  #except ValueError, e:
+  except TypeError, e:
+    print(e.message)
+    return False
+  return jsonDict
 
 def main():
   # initialise a user as a simple doa test
@@ -65,12 +73,21 @@ def main():
 
   #TODO: put the unit test stuff here
   manageJson = manage(tmpUser)
-  print("raw json:")
-  print(manageJson)
-  print("pretty json:")
-  print(manageJson)
+  # make sure json is correct
+  if getJson(manageJson):
+    print("json string is valid")
   # to store back into dict:
   # json.loads(manageJson)
+  else:
+    # errorList.append('json string has issues:")
+    print("-E-: json string has issues:")
+  print("raw json:")
+  print(manageJson)
+  ## print the dict if it exists
+  #print("pretty json:")
+  #print(manageJson)
+  #TODO: check that the json for 'manage' has two lists of streams (idea: use the dict conversion for now)
+  #TODO: find way to check types within json string
 
 
   return
