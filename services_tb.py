@@ -10,7 +10,8 @@ from ipdb import *
 '''
 test the services and classes
 '''
-from services_draft import *
+from services_draft import manage
+from services_objects import User
 
 '''
 test the services
