@@ -108,7 +108,12 @@ def main():
   return
 
 # call main
-main()
+#Note: this ensures that main won't be called if another file imports this one. 
+# This is anecdotal, I have not looked up a definition of this
+# found on:
+# https://developers.google.com/appengine/docs/python/tools/localunittesting#Python_Setting_up_a_testing_framework
+if __name__ == '__main__':
+  main()
 
 
 

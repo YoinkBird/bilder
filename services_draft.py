@@ -102,22 +102,44 @@ Write specific services for
 * and reporting request.
 '''
 
+#< def getObjectFromStorage>
+#TODO: make generic for retrieving stream as well
+#TODO: dump/retrieve json storage file with userids 
+def getObjectFromStorage(userId):
+  # in lieue of db connection
 
+  # two methods, both are fake about the id
 
+  from services_tb import createTestUsers
+  tmpUser = createTestUsers(1)
+  tmpUser.id = userId
+
+  from services_tb import genRandomUser
+  testUser = genRandomUser(**{
+      'seed':userId, 
+      'mystream':['sheets','pillows'],
+      'theirstream':'phantoms',
+    })
+  return testUser
+#</def getObjectFromStorage>
 def manage(userid):
 
+
+#TODO:  let 'manage' look up user object based on id - right now it accepts a user object which is bad because that can't be in a json...
+  
+  userObject = getObjectFromStorage(userid)
   # test objects
   if(0):
-    selfStreamList = userid.get_streams_mine() # default is self
-    otherStreamList = userid.get_streams_subscribed()
+    selfStreamList = userObject.get_streams_mine() # default is self
+    otherStreamList = userObject.get_streams_subscribed()
     # non-json return:
     return(selfStreamList, otherStreamList)
     # returns two strings - should the caller expect various returns?
     return(json.dumps(selfStreamList, otherStreamList))
 
   contentDict = {}
-  contentDict['streams_proprietary'] = userid.get_streams_mine() # default is self
-  contentDict['streams_subscribed'] = userid.get_streams_subscribed()
+  contentDict['streams_proprietary'] = userObject.get_streams_mine() # default is self
+  contentDict['streams_subscribed'] = userObject.get_streams_subscribed()
   
   
   # get subscribed streams
