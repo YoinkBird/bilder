@@ -11,6 +11,7 @@ from ipdb import *
 test the services and classes
 '''
 from services_draft import manage
+from services_draft import putObjectInStorage
 from services_objects import User
 
 '''
@@ -91,8 +92,7 @@ def main():
   tmpUser = createTestUsers(1)
 
   # dump user to file
-  with open('data.json', 'w') as outfile:
-    json.dump({tmpUser.id:tmpUser.get_hash_repr()}, outfile, sort_keys=True,indent=4)
+  putObjectInStorage(tmpUser.id,tmpUser)
 
   # each testParamsDict defines input and output params for one function
   testDataList = []

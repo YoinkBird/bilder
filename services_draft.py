@@ -37,6 +37,41 @@ Write specific services for
 * and reporting request.
 '''
 
+#< def readJsonDBFile>
+# use dict instead of list to have unique user ids and easylookup
+def readJsonDBFile(jsonUserDB):
+  userDataDict = {}
+  import os.path
+  if(os.path.isfile(jsonUserDB)):
+    userDataJson = open(jsonUserDB).read()
+    userDataDict = json.loads(userDataJson)
+    if(not type(userDataDict) is dict):
+      print("-E- file is not json dict")
+      
+  return userDataDict
+#</def readJsonDBFile>
+
+#< def putObjectInStorage>
+# requesting unique key be passed in to make this object-type agnostic
+#   i.e. 'id' is python reserved word, so 'User' should have 'userid' and 'Stream' should have 'StreamID'
+# also, what i currently call 'id' is the name, not the db storage id, so this may help eventually in the future
+def putObjectInStorage(objectid,objectRef):
+  statusCode = 0
+  jsonDBfile = 'data.json'
+
+  # read in json "db"
+  dbDict = readJsonDBFile(jsonDBfile)
+
+  # add user "key"
+  dbDict[objectid] = objectRef.get_hash_repr()
+
+  # dump object string representation to file
+  with open(jsonDBfile, 'w') as outfile:  #note: 'w' to overwrite with new dict, 'a' to append if using a list
+    # dump json repr of dict to string
+    json.dump(dbDict, outfile, sort_keys=True,indent=4)
+  return statusCode
+#< def putObjectInStorage>
+
 #< def getObjectFromStorage>
 #TODO: make generic for retrieving stream as well
 #TODONE: dump/retrieve json storage file with userids 
