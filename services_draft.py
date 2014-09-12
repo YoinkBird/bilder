@@ -90,7 +90,7 @@ def putObjectInStorage(objectid,objectRef):
   dbDict = readJsonDBFile(jsonDBfile)
 
   # add user "key"
-  dbDict[objectid] = objectRef.get_hash_repr()
+  dbDict[str(objectid)] = objectRef.get_hash_repr()
 
   # dump object string representation to file
   with open(jsonDBfile, 'w') as outfile:  #note: 'w' to overwrite with new dict, 'a' to append if using a list
@@ -104,8 +104,8 @@ def getObjectFromStorage(objectid):
   jsonDBfile = 'data.json'
   dbDict = readJsonDBFile(jsonDBfile)
 
-  if(objectid in dbDict):
-    retObject = dbDict[objectid]
+  if(str(objectid) in dbDict):
+    retObject = dbDict[str(objectid)]
   else:
     print("-E-: object not in json db file" + str(objectid))
     retObject = 0
