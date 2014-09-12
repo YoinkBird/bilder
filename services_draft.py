@@ -178,43 +178,43 @@ def manage(jsonString):
 
 #< def create_stream()>
 # (which takes a stream definition and returns a status code)
-def create_stream():
-  return
+def create_stream(streamJson):
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def create_stream>
 
 #< def view_stream()>
 # (which takes a stream id and a page range and returns a list of URLs to images and a page range)
 def view_stream():
-  return
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def view_stream>
 
 #< def image_upload()>
 # (which takes a stream id and a file)
 def image_upload():
-  return
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def image_upload>
 
 #< def view_streams_all()>
 # (which returns a list of names of streams and their cover images)
 def view_streams_all():
-  return
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def view_streams_all>
 
 #< def search_streams>
 # (which takes a query string and returns a list of streams (titles and cover image urls) that contain matching text)
 def search_streams():
-  return
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def search_streams>
 
 #< def most_viewed_streams()>
 # (which returns a list of streams sorted by recent access frequency)
 def most_viewed_streams():
-  return
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def most_viewed_streams>
 
 #< def reporting()>
 def reporting():
-  return
+  return(json.dumps('replace this dummy with a real boy!'))
 #</def reporting()>
 
 
