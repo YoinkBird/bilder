@@ -122,8 +122,10 @@ def createTestUsers(amount):
 
 #< def createTestStreams>
 def createTestStreams(amount):
+  _seed = str(random.randint(0,1000000))
+  #_seed = 5990239
   # simple start = stream with fixed id and random word for name
-  tmpStream = Stream(5990239,genRandomWordList(1,8)[0])
+  tmpStream = Stream(_seed,genRandomWordList(1,8)[0])
   return tmpStream
 #</def createTestStreams>
 
@@ -152,6 +154,8 @@ def main():
 
   # each testParamsDict defines input and output params for one function
   testDataList = []
+  #TODO: create unique hashes, then append. this way the order can be changed
+  #       then the uploader can upload images for the viewer to use
   testDataList.append( {
     'function' : manage,
     'jsonIn'   : json.dumps({'userid':tmpUser.id}),
@@ -161,19 +165,32 @@ def main():
       'streams_proprietary':tmpUser.get_streams_mine(),
       }),
     })
+  #TODO: test view counter
+  #TODO: test return code
+  # Note: in both jsonIn and jsonOout the  'streamId' and 'name' are set to the values of a tmp object
+  #       this is because the tmpObject creates these values randomly (for many reasons) and 
+  #       I need to make sure that part of the expectations match.
   testDataList.append( {
+    'name'     : 'create_stream',
     'function' : create_stream,
-    'jsonIn'   : json.dumps({
+    'jsonIn'   : {
       'streamid': tmpStream.streamId,
-      'name'    : genRandomWordList(1,8)[0],
+      'name'    : tmpStream.streamName,
       'tags'    : '#yolo #xandrflex #geraffesRdumb',
       'coverimgurl' : 'http://fisharecool.net/dog.png',
       # testing delims: space comma semcolon newline
       'subscribers' : 'friend1@friends.com friend2@friends.com,friend3@friends.com;family1@family.com\nfamily2@family.com',
-      }),
+      },
     #'jsonOut'  : '', # TODO
     'jsonOut'  : json.dumps({
-      #'subscribers':tmpStream.get_subscribers(),
+      "streamId": tmpStream.streamId,
+      "streamName": tmpStream.streamName,
+      "viewCounter": 0,
+      "tagList": ["#yolo", "#geraffesRdumb", "#xandrflex"],
+      "coverImgUrl": "http://fisharecool.net/dog.png",
+      # testing delims: space comma semcolon newline
+      "subscriberList": ["friend1@friends.com", "friend2@friends.com", "friend3@friends.com", "family1@family.com", "family2@family.com"],
+      "imageList": [],
       }),
     })
 
@@ -186,8 +203,20 @@ def main():
     #testJsonIn = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
     testJsonExpected = testParamsDict['jsonOut'] # test the defined function against the defined json string
 
+    testJsonReturned = ''
+    if('name' in testParamsDict):
+      # Note: since the purpose of 'create_stream' is to store an object in DB,
+      #       the return json is read directly from the storage and not from the function return value
+      if(testParamsDict['name'] == 'create_stream'):
+        # convert to json
+        inputJson = json.dumps(testParamsDict['jsonIn'])
+        testJsonReturned = funcName(inputJson) # test the defined function against the defined json string
+        # retrieve the stored object
+        testJsonReturned = getObjectFromStorage(testParamsDict['jsonIn']['streamid'])
+        testJsonReturned = json.dumps(testJsonReturned)
     # run function, capture output
-    testJsonReturned = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
+    else: #note: this expects 'jsonIn' already to be encoded
+      testJsonReturned = funcName(testParamsDict['jsonIn']) # test the defined function against the defined json string
     # make sure function returns something
     if(testJsonReturned):
       # make sure json is correct

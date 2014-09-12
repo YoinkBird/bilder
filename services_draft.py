@@ -70,6 +70,8 @@ def readJsonDBFile(jsonUserDB):
   userDataDict = {}
   import os.path
   if(os.path.isfile(jsonUserDB)):
+    #TODO: check if file is empty
+    #TODO: check if file is valid json
     userDataJson = open(jsonUserDB).read()
     userDataDict = json.loads(userDataJson)
     if(not type(userDataDict) is dict):
@@ -208,8 +210,8 @@ def manage(jsonString):
 # subscribers
 # tags
 # coverimgurl
-def create_stream(streamJson):
-  paramsDict = getJsonDict(streamJson)
+def create_stream(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
 
   # TODO: check input
   # populate with bare minimum
