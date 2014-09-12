@@ -203,7 +203,15 @@ def manage(jsonString):
 
 #< def create_stream()>
 # (which takes a stream definition and returns a status code)
+# "create stream page" shows
+# name
+# subscribers
+# tags
+# coverimgurl
 def create_stream(streamJson):
+  paramsDict = getJsonDict(streamJson)
+
+  #putObjectInStorage()
   return(json.dumps('replace this dummy with a real boy!'))
 #</def create_stream>
 
