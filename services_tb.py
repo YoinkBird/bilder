@@ -120,6 +120,13 @@ def createTestUsers(amount):
   return testUser
 #</def createTestUsers>
 
+#< def createTestStreams>
+def createTestStreams(amount):
+  # simple start = stream with fixed id and random word for name
+  tmpStream = Stream(5990239,genRandomWordList(1,8)[0])
+  return tmpStream
+#</def createTestStreams>
+
 def getJson(jsonStr):
   try:
     jsonDict = json.loads(jsonStr)
@@ -140,6 +147,9 @@ def main():
   # dump user to file
   putObjectInStorage(tmpUser.id,tmpUser)
 
+  # creat a test stream
+  tmpStream = createTestStreams(1)
+
   # each testParamsDict defines input and output params for one function
   testDataList = []
   testDataList.append( {
@@ -150,8 +160,22 @@ def main():
       'streams_subscribed':tmpUser.get_streams_subscribed(),
       'streams_proprietary':tmpUser.get_streams_mine(),
       }),
-    }
-  )
+    })
+  testDataList.append( {
+    'function' : create_stream,
+    'jsonIn'   : json.dumps({
+      'streamid': tmpStream.streamId,
+      'name'    : genRandomWordList(1,8)[0],
+      'tags'    : '#yolo #xandrflex #geraffesRdumb',
+      'coverimgurl' : 'http://fisharecool.net/dog.png',
+      # testing delims: space comma semcolon newline
+      'subscribers' : 'friend1@friends.com friend2@friends.com,friend3@friends.com;family1@family.com\nfamily2@family.com',
+      }),
+    #'jsonOut'  : '', # TODO
+    'jsonOut'  : json.dumps({
+      #'subscribers':tmpStream.get_subscribers(),
+      }),
+    })
 
   #TODO: put the unit test stuff here
   for testParamsDict in testDataList:

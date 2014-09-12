@@ -40,6 +40,30 @@ Write specific services for
 * and reporting request.
 '''
 
+#< def getJsonDict>
+def getJsonDict(jsonStr):
+  retJsonDict = {}
+
+  # load the thing
+  try:
+    jsonObj = json.loads(jsonStr)
+  except ValueError, e:
+    print(e.message)
+    return False
+  except TypeError, e:
+    print(e.message)
+    return False
+
+  # make sure it is a dict
+  if(type(jsonObj) is dict):
+    retJsonDict = jsonObj
+  else:
+    print("-E-: no valid json string passed to 'def manage' - after json.loads, type is not any of int,str,dict")
+    print(jsonString)
+
+  return retJsonDict
+#</def getJsonDict>
+
 #< def readJsonDBFile>
 # use dict instead of list to have unique user ids and easylookup
 def readJsonDBFile(jsonUserDB):
