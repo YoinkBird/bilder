@@ -1,6 +1,7 @@
 #from ipdb import *
 import json
 from services_objects import User
+from services_objects import Stream
 #TODO: split 'services_draft.py' into 'services.py' and 'classes.py' once things work a bit
 
 def _questions():

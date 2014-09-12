@@ -15,11 +15,17 @@ Class user
     get_stream(name)
 
 Class stream
+* basic attribs:
+  name
+  tags
+  cover img url
+  subscribers - maybe; could also simply need to email people. play it safe...
 
 '''
 
 #TODO: natively dump json string - just convert 'get_hash_repr'
 #TODO: natively import json string
+#< class User>
 class User:
   def __init__(self,id):
     self.id = id
@@ -86,4 +92,34 @@ class User:
         'streams_subscribed':self.streams_subscribed,
         }
     return hashRepr
+#</class User>
+
+#< class Stream>
+class Stream:
+  def __init__(self,streamId,streamName):
+    self.streamId = streamId
+    self.streamName = streamName
+    self.viewCounter = 0
+    self.coverImgUrl = 'blank'
+    self.imageList = []
+    self.subscribers = []
+    self.tags = []
+
+
+  # https://docs.python.org/2/reference/datamodel.html#object.__repr__
+  # TODO: this should look like a valid Python expression that could be used to recreate an object with the same value
+  # this seems to allow typing of the instantiation without args
+  def __repr__(self):
+    #strValue = "name: " + self.name + " gpa: " + str(self.gpa) + " age: " + str(self.age)
+    strValue = "{\
+        'streamId':"    + str(self.streamId) + ",\
+        'viewCounter':" + str(self.viewCounter) + ",\
+        'coverImgUrl':" + self.coverImgUrl + ",\
+        'imageList':"   + str(self.imageList) + "}"
+    return strValue
+
+  def get_hash_repr(self):
+    return self.__dict__
+
+#</class Stream>
 
