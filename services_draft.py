@@ -211,7 +211,29 @@ def manage(jsonString):
 def create_stream(streamJson):
   paramsDict = getJsonDict(streamJson)
 
-  #putObjectInStorage()
+  # TODO: check input
+  # populate with bare minimum
+  tmpStream = Stream(paramsDict['streamid'],paramsDict['name'])
+
+  # TODOne: make a dict of params and setters
+  #if('tags' in paramsDict):
+  #  tmpStream.set_tags(paramsDict['tags'])
+  #if('coverimgurl' in paramsDict):
+  #  tmpStream.set_tags(paramsDict['coverimgurl'])
+  #if('subscribers' in paramsDict):
+
+  setterDict = {
+      'tags':tmpStream.set_tags,
+      'subscribers':tmpStream.subscriber_add,
+      'coverimgurl':tmpStream.set_cover_url,
+    }
+  for param in paramsDict:
+    if(param in setterDict):
+      setterDict[param](paramsDict[param])
+  # </object created>
+
+  returnCode = putObjectInStorage(tmpStream.streamId,tmpStream)
+    
   return(json.dumps('replace this dummy with a real boy!'))
 #</def create_stream>
 
