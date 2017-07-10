@@ -102,6 +102,7 @@ def putObjectInStorage(objectid,objectRef):
 #< def putObjectInStorage>
 
 #< def getObjectFromStorage>
+# returns a dict representing the object
 def getObjectFromStorage(objectid):
   jsonDBfile = 'data.json'
   dbDict = readJsonDBFile(jsonDBfile)
@@ -234,6 +235,7 @@ def create_stream(jsonParamStr):
       setterDict[param](paramsDict[param])
   # </object created>
 
+  # add stream object to db
   returnCode = putObjectInStorage(tmpStream.streamId,tmpStream)
     
   return(json.dumps('replace this dummy with a real boy!'))
@@ -241,36 +243,74 @@ def create_stream(jsonParamStr):
 
 #< def view_stream()>
 # (which takes a stream id and a page range and returns a list of URLs to images and a page range)
-def view_stream():
+# lwatson notes:
+# mock: 'view a single stream page'
+def view_stream(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
+
+  streamId = paramsDict['streamid']
+  pageRange = paramsDict['pageRange']
+
+  #TODO: create 'getStreamObjectFromStorage' in preparation for working with google DB stuff (hey, at least there are json-based tests now so this refactoring won't be terrible!)
+  #TODO: retrieve URLs from stream
+  objectDataDict = getObjectFromStorage(streamid)
+
+  retJson = json.dumps(objectDataDict['imageList'])
+  
+
+
+
   return(json.dumps('replace this dummy with a real boy!'))
 #</def view_stream>
 
 #< def image_upload()>
 # (which takes a stream id and a file)
-def image_upload():
+# lwatson notes:
+# mock: 'view a single stream page'
+# TODO: 'and a file' must mean file handle; either way just look up how to upload images
+def image_upload(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
+
+  #TODO: turn into function
+  missingArgs = 0
+  for param in ['streamid','filehandle']:
+    if(param not in paramsDict):
+      print("-E-: missing parameter: " + param)
+      missingArgs += 1
+  if(missingArgs != 0):
+    print("-E: missing " + missingArgs + " args")
+    #TODO: raise exception
+    exit
+
+  #TODO: upload and store file
+
   return(json.dumps('replace this dummy with a real boy!'))
 #</def image_upload>
 
 #< def view_streams_all()>
 # (which returns a list of names of streams and their cover images)
-def view_streams_all():
+def view_streams_all(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
   return(json.dumps('replace this dummy with a real boy!'))
 #</def view_streams_all>
 
 #< def search_streams>
 # (which takes a query string and returns a list of streams (titles and cover image urls) that contain matching text)
-def search_streams():
+def search_streams(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
   return(json.dumps('replace this dummy with a real boy!'))
 #</def search_streams>
 
 #< def most_viewed_streams()>
 # (which returns a list of streams sorted by recent access frequency)
-def most_viewed_streams():
+def most_viewed_streams(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
   return(json.dumps('replace this dummy with a real boy!'))
 #</def most_viewed_streams>
 
 #< def reporting()>
-def reporting():
+def reporting(jsonParamStr):
+  paramsDict = getJsonDict(jsonParamStr)
   return(json.dumps('replace this dummy with a real boy!'))
 #</def reporting()>
 

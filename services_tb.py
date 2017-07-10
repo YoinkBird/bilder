@@ -193,6 +193,30 @@ def main():
       "imageList": [],
       }),
     })
+  view_streamTestDict = {
+      'name'  : 'view_stream',
+      'function': view_stream,
+      'jsonIn'  : {
+        'streamid': tmpStream.streamId,
+        'pagerange' : "",
+        },
+      'jsonOut' : {
+        'streamid': tmpStream.streamId,
+        'pagerange' : "",
+        },
+      }
+  image_uploadTestDict = {
+      'name'  : 'image_upload',
+      'function': image_upload,
+      'jsonIn'  : {
+        'streamid': tmpStream.streamId,
+        },
+      'jsonOut' : {
+        'streamid': tmpStream.streamId,
+        },
+      }
+  testDataList.append(image_uploadTestDict);
+
 
   #TODO: put the unit test stuff here
   for testParamsDict in testDataList:
